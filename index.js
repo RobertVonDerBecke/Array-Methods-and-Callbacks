@@ -53,16 +53,16 @@ Use the higher-order function getWinners to do the following:
 4. Returns the names of all winning countries in an array called `winners` */
 
 function getWinners(arr, getFinalsCb) {
-	//return getFinalCb(arr).map(item => item['Home Team Goals] >)
-	let winners = [];
-	getFinalsCb(arr).forEach((item) => {
-		if (parseInt(item["Home Team Goals"]) > parseInt(item["Away Team Goals"])) {
-			winners.push(item["Home Team Name"]);
-		} else {
-			winners.push(item["Away Team Name"]);
-		}
-	});
-	return winners;
+	return getFinalsCb(arr).map(item => item['Home Team Goals'] > item['Away Team Goals'] ? item["Home Team Name"] : item["Away Team Name"]);
+	// let winners = [];
+	// getFinalsCb(arr).forEach((item) => {
+	// 	if (parseInt(item["Home Team Goals"]) > parseInt(item["Away Team Goals"])) {
+	// 		winners.push(item["Home Team Name"]);
+	// 	} else {
+	// 		winners.push(item["Away Team Name"]);
+	// 	}
+	// });
+	// return winners;
 }
 console.log(getWinners(fifaData, getFinals));
 
@@ -76,18 +76,16 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(arr, yearCb, winnersCb) {
-	const year = yearCb(arr, getFinals);
-	const country = winnersCb(arr, getFinals);
+function getWinnersByYear(arr, getYearCb, getWinnersCb) {
+	const year = getYearCb(arr, getFinals);
+	const country = getWinnersCb(arr, getFinals);
 	// let results = [];
 	// for(let i=0;i <year.length;i++){
 	//     console.log(country[i])
 	//     results.push(`In ${year[i]}, ${country[i]} won the world cup!`)
 	// }
 	// return results;
-	return country.map(
-		(item, index) => `In ${year[index]}, ${item} won the world cup!`
-	);
+	return country.map((item, index) => `In ${year[index]}, ${item} won the world cup!`);
 }
 console.log(getWinnersByYear(fifaData, getYears, getWinners));
 
@@ -101,10 +99,24 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-	/* code here */
-}
+function getAverageGoals(getFinalsCb) {
+	// const averages = [];
+    const x = getFinalsCb.map(item => item['Home Team Goals'])
+    const y = getFinalsCb.map(item => item['Away Team Goals'])
+     let averageX = x.reduce((total, current) => total + current);
+     let averageY = y.reduce((total, current) => total + current);
+     
+    //  averages.push(`${(averageX/x.length).toFixed(2)}, ${(averageY/y.length).toFixed(2)}`)
+    //  averages.push({
+    //     Home: (averageX/x.length).toFixed(2),
+    //     Away: (averageY/y.length).toFixed(2)
 
+    //  })
+     
+     return ((averageX/x.length) + (averageY/y.length)).toFixed(2);
+    }
+
+console.log(getAverageGoals(getFinals(fifaData)));
 /// 🥅 STRETCH 🥅 ///
 
 /* 💪💪💪💪💪 Stretch 1: 💪💪💪💪💪 
